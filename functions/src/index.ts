@@ -11,8 +11,6 @@ export const accessToken = functions.https.onRequest((req, res) => {
   const code = queryObject.code;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-  console.log("clientSecret", clientSecret);
-
   if (!clientId || !code) {
     res.sendStatus(400);
   } else {
