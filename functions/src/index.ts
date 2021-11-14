@@ -3,7 +3,13 @@ import url = require("url");
 import dotenv = require("dotenv");
 import request = require("request");
 
+const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com"];
+
 export const accessToken = functions.https.onRequest((req, res) => {
+  if (!!req.headers.origin && ALLOWED_ORIGINS.includes(req.headers.origin)) {
+    res.set("Access-Control-Allow-Origin", req.headers.origin);
+  }
+
   dotenv.config({path: __dirname + "/.env"});
 
   const queryObject = url.parse(req.url, true).query;
@@ -11,7 +17,6 @@ export const accessToken = functions.https.onRequest((req, res) => {
   const code = queryObject.code;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-  res.set("Access-Control-Allow-Origin", "*");
   if (!clientId || !code) {
     res.sendStatus(400);
   } else {
