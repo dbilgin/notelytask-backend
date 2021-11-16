@@ -1,11 +1,17 @@
-import * as functions from "firebase-functions";
+import express from 'express';
 import url = require("url");
 import dotenv = require("dotenv");
 import request = require("request");
 
 const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com"];
+const app = express();
+const port = 3000;
 
-export const accessToken = functions.https.onRequest((req, res) => {
+app.get('/', (_, res) => {
+  res.send('Welcome to NotelyTask!');
+});
+
+app.get('/accessToken', (req, res) => {
   if (!!req.headers.origin && ALLOWED_ORIGINS.includes(req.headers.origin)) {
     res.set("Access-Control-Allow-Origin", req.headers.origin);
   }
@@ -41,4 +47,8 @@ export const accessToken = functions.https.onRequest((req, res) => {
         }
     );
   }
+});
+
+app.listen(port, () => {
+  return console.log(`server is listening on ${port}`);
 });
