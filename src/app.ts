@@ -11,7 +11,7 @@ app.get('/', (_, res) => {
   res.send('Welcome to NotelyTask!');
 });
 
-app.get('/accessToken', (req, res) => {
+app.post('/accessToken', (req, res) => {
   if (!!req.headers.origin && ALLOWED_ORIGINS.includes(req.headers.origin)) {
     res.set("Access-Control-Allow-Origin", req.headers.origin);
   }
