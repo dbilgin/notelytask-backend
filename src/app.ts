@@ -24,8 +24,6 @@ app.post('/accessToken', (req, res) => {
   const code = queryObject.code;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-  console.log(__dirname);
-
   if (!clientId || !code) {
     res.sendStatus(400);
   } else {
@@ -55,7 +53,7 @@ app.post('/accessToken', (req, res) => {
   }
 });
 
-app.post('/google_verify', async (req, res) => {
+app.post('/googleVerify', async (req, res) => {
   if (!!req.headers.origin && ALLOWED_ORIGINS.includes(req.headers.origin)) {
     res.set("Access-Control-Allow-Origin", req.headers.origin);
   }
@@ -67,6 +65,7 @@ app.post('/google_verify', async (req, res) => {
 
   if (!idToken) {
     res.sendStatus(400);
+    return;
   }
 
   const client = new OAuth2Client();
