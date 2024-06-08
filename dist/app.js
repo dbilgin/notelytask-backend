@@ -17,7 +17,7 @@ const url = require("url");
 const dotenv = require("dotenv");
 const request = require("request");
 const { OAuth2Client } = require('google-auth-library');
-const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com", "http://localhost:60836"];
+const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com"];
 const app = (0, express_1.default)();
 const port = 3000;
 app.get('/', (_, res) => {
@@ -32,7 +32,6 @@ app.post('/accessToken', (req, res) => {
     const clientId = queryObject.client_id;
     const code = queryObject.code;
     const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-    console.log(__dirname);
     if (!clientId || !code) {
         res.sendStatus(400);
     }
@@ -42,7 +41,7 @@ app.post('/accessToken', (req, res) => {
                 "client_id": clientId,
                 "code": code,
                 "client_secret": clientSecret,
-                "redirect_uri": "http://localhost:60836/github"
+                "redirect_uri": "https://www.notelytask.com/github"
             },
         }, (error, response, body) => {
             console.log(body);
@@ -58,7 +57,7 @@ app.post('/accessToken', (req, res) => {
         });
     }
 });
-app.post('/google_verify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/googleVerify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!!req.headers.origin && ALLOWED_ORIGINS.includes(req.headers.origin)) {
         res.set("Access-Control-Allow-Origin", req.headers.origin);
     }
@@ -67,6 +66,7 @@ app.post('/google_verify', (req, res) => __awaiter(void 0, void 0, void 0, funct
     const idToken = queryObject.id_token;
     if (!idToken) {
         res.sendStatus(400);
+        return;
     }
     const client = new OAuth2Client();
     try {
