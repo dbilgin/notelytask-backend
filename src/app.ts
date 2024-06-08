@@ -4,7 +4,7 @@ import dotenv = require("dotenv");
 import request = require("request");
 const {OAuth2Client} = require('google-auth-library');
 
-const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com", "http://localhost:60836"];
+const ALLOWED_ORIGINS = ["https://notelytask.com", "https://www.notelytask.com"];
 const app = express();
 const port = 3000;
 
@@ -34,7 +34,7 @@ app.post('/accessToken', (req, res) => {
             "client_id": clientId,
             "code": code,
             "client_secret": clientSecret,
-            "redirect_uri": "http://localhost:60836/github"
+            "redirect_uri": "https://www.notelytask.com/github"
           },
         },
         (error, response, body) => {
